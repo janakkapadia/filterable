@@ -1,0 +1,15 @@
+<?php
+
+namespace {{ namespace }};
+
+use JanakKapadia\Filterable\Filter\Filter;
+
+class {{ class }} extends Filter
+{
+    protected array $filters = ['sort_by'];
+
+    public function sort_by($column): void
+    {
+        $this->builder->orderBy($column, request('sort_order', 'asc'));
+    }
+}

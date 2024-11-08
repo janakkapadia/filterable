@@ -1,3 +1,4 @@
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/janak.kapadia)
 # Filterable Package
 
 A custom Laravel package for dynamic filtering of models, built to simplify the process of filtering data in Laravel applications.
@@ -50,8 +51,8 @@ A custom Laravel package for dynamic filtering of models, built to simplify the 
    ```
    GET URL/your-model?sort_by=id&sort_order=desc&search=title
    ```
-
 6. **Example Usage For Model Filter File**
+
 
       In your filter model (YourModelFilter.php), you can define a sort_by method:
 

@@ -1,4 +1,3 @@
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/janak.kapadia)
 # Filterable Package
 
 A custom Laravel package for dynamic filtering of models, built to simplify the process of filtering data in Laravel applications.
@@ -23,14 +22,14 @@ A custom Laravel package for dynamic filtering of models, built to simplify the 
     ```bash
     php artisan filter:model {ModelName}
    
-3. **Add Filterable Trait to Your Model**
+3. **Add Filter Trait to Your Model**
     
     ```php
-    use JanakKapadia\Filterable\Traits\Filterable;
+    use JanakKapadia\Filterable\Traits\Filter;
     
     class YourModel extends Model
     {
-        use Filterable;
+        use Filter;
     
         // Additional model code...
     }
@@ -38,7 +37,7 @@ A custom Laravel package for dynamic filtering of models, built to simplify the 
 
 4. **Usage In Controller**
     ```php
-    public function index(Request $request, YourModelFilter $filter)
+    public function index(Request $request)
     {
         $data = YourModel::filter()->get();       
     }
@@ -76,4 +75,6 @@ A custom Laravel package for dynamic filtering of models, built to simplify the 
       }
       ```
    
-7. This will filter by id in descending order also search in model. 
+7. This will filter by id in descending order also search in model.
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/janak.kapadia)

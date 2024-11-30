@@ -1,7 +1,7 @@
 {
     "name": "janakkapadia/filterable",
     "description": "Enhance your Laravel app with dynamic, customizable filtering for Eloquent models. This package provides an easy setup for multi-parameter filtering, custom logic, and relationship support—perfect for building flexible, data-driven features like admin panels and reports.",
-    "version": "0.0.1",
+    "version": "0.0.3",
     "type": "package",
     "require": {
         "php": "^8.1",

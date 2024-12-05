@@ -6,10 +6,17 @@ use JanakKapadia\Filterable\Filter\Filter;
 
 class {{ class }} extends Filter
 {
-    protected array $filters = ['sort_by'];
+    protected array $filters = ['search'];
 
-    public function sort_by($column): void
+    protected array $sort = ['sort_by'];
+
+    public function search($keyword): void
     {
-        $this->builder->orderBy($column, request('sort_order', 'asc'));
+        $this->builder->orderBy('name', $keyword);
+    }
+
+    public function sort_by($column = 'id'): void
+    {
+        $this->builder->orderBy($column, request()->get('sort_order', 'asc'));
     }
 }

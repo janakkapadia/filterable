@@ -27,7 +27,7 @@ abstract class Filter implements FilterContract
      *
      * @var array
      */
-    protected array $orderBy = [];
+    protected array $sort = [];
 
     /**
      * Custom filter key value pairs
@@ -81,7 +81,7 @@ abstract class Filter implements FilterContract
 
         foreach ($this->getFilters() as $filter => $value) {
             if (method_exists($this, $filter)) {
-                if (in_array($filter, $this->orderBy)) {
+                if (in_array($filter, $this->sort)) {
                     $this->$filter($value);
                 } else if ($this->whereBindParentheses) {
                     $this->builder->where(function($query) use ($filter, $value) {
@@ -106,7 +106,7 @@ abstract class Filter implements FilterContract
      */
     private function getFilters(): array
     {
-        $allowedFilters = array_merge($this->filters, $this->orderBy);
+        $allowedFilters = array_merge($this->filters, $this->sort);
         
         if (count($this->values)) {
             return array_filter(Arr::only($this->values, $allowedFilters));

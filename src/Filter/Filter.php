@@ -30,6 +30,13 @@ abstract class Filter implements FilterContract
     protected array $values = [];
 
     /**
+     * Whether to wrap where conditions in parentheses
+     *
+     * @var bool
+     */
+    protected bool $isWhereBindParentheses = false;
+
+    /**
      * Create a new ThreadFilters instance.
      * @param Request $request
      */
@@ -46,6 +53,16 @@ abstract class Filter implements FilterContract
     }
 
     /**
+     * Set whether to wrap where conditions in parentheses
+     */
+    public function setWhereBindParentheses(bool $isWhereBindParentheses): static
+    {
+        $this->isWhereBindParentheses = $isWhereBindParentheses;
+
+        return $this;
+    }
+
+    /**
      * Apply the filters.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
@@ -57,7 +74,16 @@ abstract class Filter implements FilterContract
 
         foreach ($this->getFilters() as $filter => $value) {
             if (method_exists($this, $filter)) {
-                $this->$filter($value);
+                if ($this->isWhereBindParentheses) {
+                    $this->builder->where(function($query) use ($filter, $value) {
+                        $originalBuilder = $this->builder;
+                        $this->builder = $query;
+                        $this->$filter($value);
+                        $this->builder = $originalBuilder;
+                    });
+                } else {
+                    $this->$filter($value);
+                }
             }
         }
 

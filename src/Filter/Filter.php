@@ -23,6 +23,13 @@ abstract class Filter implements FilterContract
     protected array $filters = [];
 
     /**
+     * Registered order by columns.
+     *
+     * @var array
+     */
+    protected array $orderBy = [];
+
+    /**
      * Custom filter key value pairs
      *
      * @var array
@@ -34,7 +41,7 @@ abstract class Filter implements FilterContract
      *
      * @var bool
      */
-    protected bool $isWhereBindParentheses = false;
+    protected bool $whereBindParentheses = false;
 
     /**
      * Create a new ThreadFilters instance.
@@ -55,9 +62,9 @@ abstract class Filter implements FilterContract
     /**
      * Set whether to wrap where conditions in parentheses
      */
-    public function setWhereBindParentheses(bool $isWhereBindParentheses): static
+    public function setWhereBindParentheses(bool $whereBindParentheses): static
     {
-        $this->isWhereBindParentheses = $isWhereBindParentheses;
+        $this->whereBindParentheses = $whereBindParentheses;
 
         return $this;
     }
@@ -74,7 +81,9 @@ abstract class Filter implements FilterContract
 
         foreach ($this->getFilters() as $filter => $value) {
             if (method_exists($this, $filter)) {
-                if ($this->isWhereBindParentheses) {
+                if (in_array($filter, $this->orderBy)) {
+                    $this->$filter($value);
+                } else if ($this->whereBindParentheses) {
                     $this->builder->where(function($query) use ($filter, $value) {
                         $originalBuilder = $this->builder;
                         $this->builder = $query;
@@ -97,10 +106,12 @@ abstract class Filter implements FilterContract
      */
     private function getFilters(): array
     {
+        $allowedFilters = array_merge($this->filters, $this->orderBy);
+        
         if (count($this->values)) {
-            return array_filter(Arr::only($this->values, $this->filters));
+            return array_filter(Arr::only($this->values, $allowedFilters));
         }
 
-        return array_filter($this->request->only($this->filters));
+        return array_filter($this->request->only($allowedFilters));
     }
 }

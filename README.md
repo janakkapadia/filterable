@@ -58,23 +58,29 @@ A custom Laravel package for dynamic filtering of models, built to simplify the 
    To filter and sort the data, you can make a request like this:
 
    ```
-   GET URL/your-model?sort_by=id&sort_order=desc&search=title
+   GET URL/your-model?sort_by=id&search=title&status=active
    ```
 
 6. **Example Usage For Model Filter File**
 
-    In your filter model (YourModelFilter.php), you can define filter methods:
+    In your filter model (YourModelFilter.php), you can define both filter and sort methods:
 
     ```php
     class YourModelFilters extends Filter
     {
-        protected array $filters = ['sort_by', 'search', 'status'];
+        // Define your filterable fields
+        protected array $filters = ['search', 'status'];
+        
+        // Define your sortable fields
+        protected array $sort = ['sort_by'];
    
+        // Sort method
         public function sort_by($column): void
         {
-            $this->builder->orderBy($column, request('sort_order', 'asc'));
+            $this->builder->orderBy($column);
         }
    
+        // Filter methods
         public function search($keyword): void
         {
             $this->builder->where(function ($query) use ($keyword) {
@@ -115,5 +121,6 @@ A custom Laravel package for dynamic filtering of models, built to simplify the 
 
    - **Parentheses Wrapping**: Use `filter(true)` to wrap where conditions in parentheses for complex queries
    - **Filter Chaining**: You can chain multiple filter operations together
+   - **Separate Filter and Sort Fields**: Define filterable fields in `$filters` array and sortable fields in `$sort` array
 
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/janak.kapadia)
